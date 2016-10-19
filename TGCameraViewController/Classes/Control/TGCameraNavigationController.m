@@ -40,7 +40,7 @@
 
 @implementation TGCameraNavigationController
 
-+ (instancetype)newWithCameraDelegate:(id<TGCameraDelegate>)delegate
++ (instancetype)newWithCameraDelegate:(id<TGCameraDelegate>)delegate andDefaultMask:(NSString *)defaultMask
 {
     TGCameraNavigationController *navigationController = [super new];
     navigationController.navigationBarHidden = YES;
@@ -50,7 +50,7 @@
 
         switch (status) {
             case AVAuthorizationStatusAuthorized:
-                [navigationController setupAuthorizedWithDelegate:delegate];
+                [navigationController setupAuthorizedWithDelegate:delegate andDefaultMask:defaultMask];
                 break;
                 
             case AVAuthorizationStatusRestricted:
@@ -97,9 +97,11 @@
 #pragma mark - Private methods
 
 - (void)setupAuthorizedWithDelegate:(id<TGCameraDelegate>)delegate
+                     andDefaultMask:(NSString *)defaultMask
 {
     TGCameraViewController *viewController = [[TGCameraViewController alloc] init];
     viewController.delegate = delegate;
+    viewController.defaultMask = defaultMask;
     
     self.viewControllers = @[viewController];
 }

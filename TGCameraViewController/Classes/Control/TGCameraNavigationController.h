@@ -46,6 +46,6 @@
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController __attribute__
 ((unavailable("[-initWithRootViewController:] is not allowed, use [+newWithCameraDelegate:]")));
 
-+ (instancetype)newWithCameraDelegate:(id<TGCameraDelegate>)delegate;
++ (instancetype)newWithCameraDelegate:(id<TGCameraDelegate>)delegate andDefaultMask:(NSString *)defaultMask;
 
 @end

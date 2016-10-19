@@ -100,7 +100,7 @@
 
 - (IBAction)takePhotoTapped
 {    
-    TGCameraNavigationController *navigationController = [TGCameraNavigationController newWithCameraDelegate:self];
+    TGCameraNavigationController *navigationController = [TGCameraNavigationController newWithCameraDelegate:self andDefaultMask:@"blueMask"];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 

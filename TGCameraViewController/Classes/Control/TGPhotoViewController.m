@@ -54,6 +54,7 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 @property (strong, nonatomic) UIImage *photo;
 @property (strong, nonatomic) NSCache *cachePhoto;
 @property (nonatomic) BOOL albumPhoto;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *maskImageView;
 
 - (IBAction)backTapped;
 - (IBAction)confirmTapped;
@@ -107,6 +108,10 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
     }
     
     [self addDetailViewToButton:_defaultFilterButton];
+    
+    if (self.defaultMask) {
+        self.maskImageView.image = [UIImage imageNamed:_defaultMask];
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -49,6 +49,7 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toggleButtonWidth;
+@property (unsafe_unretained, nonatomic) IBOutlet UIImageView *maskImage;
 
 @property (strong, nonatomic) TGCamera *camera;
 @property (nonatomic) BOOL wasLoaded;
@@ -178,6 +179,10 @@
         _wasLoaded = YES;
         [_camera insertSublayerWithCaptureView:_captureView atRootView:self.view];
     }
+    
+    if (self.defaultMask) {
+        self.maskImage.image = [UIImage imageNamed:self.defaultMask];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -208,6 +213,7 @@
     
     TGPhotoViewController *viewController = [TGPhotoViewController newWithDelegate:_delegate photo:photo];
     [viewController setAlbumPhoto:YES];
+    viewController.defaultMask = self.defaultMask;
     [self.navigationController pushViewController:viewController animated:NO];
     
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -263,6 +269,7 @@
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         TGPhotoViewController *viewController = [TGPhotoViewController newWithDelegate:_delegate photo:photo];
+        viewController.defaultMask = self.defaultMask;
         [self.navigationController pushViewController:viewController animated:YES];
     });
 #endif
@@ -358,6 +365,79 @@
     [TGCameraSlideView showSlideUpView:_slideUpView slideDownView:_slideDownView atView:_captureView completion:^{
         completion();
     }];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([navigationController.viewControllers count] == 3 && ([[[[navigationController.viewControllers objectAtIndex:2] class] description] isEqualToString:@"PUUIImageViewController"] || [[[[navigationController.viewControllers objectAtIndex:2] class] description] isEqualToString:@"PLUIImageViewController"]))
+    {
+        [self addCircleOverlayToImagePicker:viewController];
+    }
+}
+
+#pragma mark - Circle overlay trick
+
+-(void)addCircleOverlayToImagePicker:(UIViewController*)viewController
+{
+    UIColor *circleColor = [UIColor clearColor];
+    UIColor *maskColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+    
+    CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    UIView *plCropOverlayCropView; //The default crop view, we wan't to hide it and show our circular one
+    UIView *plCropOverlayBottomBar; //On iPhone is the bar with "cancel" and "choose" button, on Ipad is an Image View with a label saying "Scale and move"
+    
+    //Subviews hirearchy is different in iPad/iPhone:
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        
+        plCropOverlayCropView = [viewController.view.subviews objectAtIndex:1];
+        plCropOverlayBottomBar = [[[[viewController.view subviews] objectAtIndex:1] subviews] objectAtIndex:1];
+        
+        //Protect against iOS changes...
+        if (! [[[plCropOverlayCropView class] description] isEqualToString:@"PLCropOverlay"]){
+            return;
+        }
+        if (! [[[plCropOverlayBottomBar class] description] isEqualToString:@"UIImageView"]){
+            return;
+        }
+    }
+    else{
+        plCropOverlayCropView = [[[viewController.view.subviews objectAtIndex:1] subviews] firstObject];
+        plCropOverlayBottomBar = [[[[viewController.view subviews] objectAtIndex:1] subviews] objectAtIndex:1];
+        
+        //Protect against iOS changes...
+        if (! [[[plCropOverlayCropView class] description] isEqualToString:@"PLCropOverlayCropView"]){
+            return;
+        }
+        if (! [[[plCropOverlayBottomBar class] description] isEqualToString:@"PLCropOverlayBottomBar"]){
+
+            return;
+        }
+    }
+    
+    //It seems that everything is ok, we found the CropOverlayCropView and the CropOverlayBottomBar
+    
+    plCropOverlayCropView.hidden = NO; //Hide default CropView
+    
+    CALayer *maskLayer = [CALayer new];
+    maskLayer.frame = CGRectMake(0, (screenHeight - screenWidth)/2, screenWidth, screenWidth);
+    maskLayer.contents = (id)[UIImage imageNamed:_defaultMask].CGImage;
+    [viewController.view.layer addSublayer:maskLayer];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+        //On iPhone add an hint label on top saying "scale and move" or whatever you want
+        UILabel *cropLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, screenWidth, 50)];
+        [cropLabel setText:NSLocalizedString(@"IMAGE_PICKER_CROP_LABEL", nil)];
+        [cropLabel setTextAlignment:NSTextAlignmentCenter];
+        [cropLabel setTextColor:[UIColor whiteColor]];
+        [viewController.view addSubview:cropLabel];
+    }
+    else{ //On iPad re-add the overlayBottomBar with the label "scale and move" because we set its parent to hidden (it's a subview of PLCropOverlay)
+        [viewController.view addSubview:plCropOverlayBottomBar];
+    }
 }
 
 @end
