@@ -118,7 +118,7 @@
     
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
         if (granted) {
-            [self setupAuthorizedWithDelegate:delegate];
+            [self setupAuthorizedWithDelegate:delegate andDefaultMask:@"redMask"];
         } else {
             [self setupDenied];
         }
