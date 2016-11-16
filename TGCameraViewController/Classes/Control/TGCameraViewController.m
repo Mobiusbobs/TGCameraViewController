@@ -32,14 +32,8 @@
 @interface TGCameraViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *captureView;
-@property (strong, nonatomic) IBOutlet UIImageView *topLeftView;
-@property (strong, nonatomic) IBOutlet UIImageView *topRightView;
-@property (strong, nonatomic) IBOutlet UIImageView *bottomLeftView;
-@property (strong, nonatomic) IBOutlet UIImageView *bottomRightView;
 @property (strong, nonatomic) IBOutlet UIView *separatorView;
-@property (strong, nonatomic) IBOutlet UIView *actionsView;
 @property (strong, nonatomic) IBOutlet TGTintedButton *closeButton;
-@property (strong, nonatomic) IBOutlet TGTintedButton *gridButton;
 @property (strong, nonatomic) IBOutlet TGTintedButton *toggleButton;
 @property (strong, nonatomic) IBOutlet TGTintedButton *shotButton;
 @property (strong, nonatomic) IBOutlet TGTintedButton *albumButton;
@@ -111,17 +105,12 @@
     [_closeButton setImage:[UIImage imageNamed:@"CameraClose" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [_shotButton setImage:[UIImage imageNamed:@"CameraShot" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [_albumButton setImage:[UIImage imageNamed:@"CameraRoll" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    [_gridButton setImage:[UIImage imageNamed:@"CameraGrid" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     [_toggleButton setImage:[UIImage imageNamed:@"CameraToggle" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     
     _camera = [TGCamera cameraWithFlashButton:_flashButton];
     
     _captureView.backgroundColor = [UIColor clearColor];
-    
-    _topLeftView.transform = CGAffineTransformMakeRotation(0);
-    _topRightView.transform = CGAffineTransformMakeRotation(M_PI_2);
-    _bottomLeftView.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    _bottomRightView.transform = CGAffineTransformMakeRotation(M_PI_2*2);
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -135,14 +124,6 @@
     
     _separatorView.hidden = NO;
     
-    _actionsView.hidden = YES;
-    
-    _topLeftView.hidden =
-    _topRightView.hidden =
-    _bottomLeftView.hidden =
-    _bottomRightView.hidden = YES;
-    
-    _gridButton.enabled =
     _toggleButton.enabled =
     _shotButton.enabled =
     _albumButton.enabled =
@@ -160,14 +141,7 @@
     _separatorView.hidden = YES;
     
     [TGCameraSlideView hideSlideUpView:_slideUpView slideDownView:_slideDownView atView:_captureView completion:^{
-        _topLeftView.hidden =
-        _topRightView.hidden =
-        _bottomLeftView.hidden =
-        _bottomRightView.hidden = NO;
         
-        _actionsView.hidden = NO;
-        
-        _gridButton.enabled =
         _toggleButton.enabled =
         _shotButton.enabled =
         _albumButton.enabled =
@@ -230,7 +204,7 @@
 
 - (IBAction)gridTapped
 {
-    [_camera disPlayGridView];
+    //[_camera disPlayGridView];
 }
 
 - (IBAction)flashTapped
@@ -291,6 +265,17 @@
     [_camera focusView:_captureView inTouchPoint:touchPoint];
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+   
+    if([touch.view.superview isKindOfClass:[TGTintedButton class]]) {
+            return NO;
+        }
+    
+    return YES;
+}
+
+
 #pragma mark -
 #pragma mark - Private methods
 
@@ -324,7 +309,6 @@
     CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
     
     [UIView animateWithDuration:.5f animations:^{
-        _gridButton.transform =
         _toggleButton.transform =
         _albumButton.transform =
         _flashButton.transform = transform;
@@ -353,7 +337,6 @@
 
 - (void)viewWillDisappearWithCompletion:(void (^)(void))completion
 {
-    _actionsView.hidden = YES;
     
     [TGCameraSlideView showSlideUpView:_slideUpView slideDownView:_slideDownView atView:_captureView completion:^{
         completion();

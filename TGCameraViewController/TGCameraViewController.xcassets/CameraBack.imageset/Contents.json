@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "CameraBack.png"
+      "filename" : "rectangle14.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "CameraBack@2x.png"
+      "filename" : "rectangle14@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "CameraBack@3x.png"
+      "filename" : "rectangle14@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

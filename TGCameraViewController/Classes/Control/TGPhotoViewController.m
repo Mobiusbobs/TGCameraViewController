@@ -39,6 +39,7 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 
 @interface TGPhotoViewController ()
 
+@property (strong, nonatomic) IBOutlet UIView *backgroundView;
 @property (strong, nonatomic) IBOutlet UIImageView *photoView;
 @property (strong, nonatomic) IBOutlet UIView *bottomView;
 @property (strong, nonatomic) IBOutlet TGCameraFilterView *filterView;
@@ -179,6 +180,7 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         [_filterView addToView:self.view aboveView:_bottomView];
         [self.view sendSubviewToBack:_filterView];
         [self.view sendSubviewToBack:_photoView];
+        [self.view sendSubviewToBack:_backgroundView];
     }
 }
 

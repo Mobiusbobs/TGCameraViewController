@@ -13,24 +13,16 @@
 
 - (void)setNeedsLayout {
     [super setNeedsLayout];
-    [self updateTintIfNeeded];
+    //[self updateTintIfNeeded];
 }
 
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state {
-    if (state != UIControlStateNormal) {
-        return;
-    }
-    
-    UIImageRenderingMode renderingMode = self.disableTint ? UIImageRenderingModeAlwaysOriginal : UIImageRenderingModeAlwaysTemplate;
-    [super setBackgroundImage:[image imageWithRenderingMode:renderingMode] forState:state];
+
+    [super setBackgroundImage:image forState:state];
 }
 
 - (void)setImage:(UIImage *)image forState:(UIControlState)state {
-    if (state != UIControlStateNormal) {
-        return;
-    }
-    UIImageRenderingMode renderingMode = self.disableTint ? UIImageRenderingModeAlwaysOriginal : UIImageRenderingModeAlwaysTemplate;
-    [super setImage:[image imageWithRenderingMode:renderingMode] forState:state];
+    [super setImage:image forState:state];
 }
 
 

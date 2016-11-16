@@ -28,7 +28,7 @@
     [super viewDidLoad];
     
     // set custom tint color
-    //[TGCameraColor setTintColor: [UIColor greenColor]];
+    [TGCameraColor setTintColor: [UIColor colorWithRed:119.0f/255.0f green:169.0f/255.0f blue:238.0f/255.0f alpha:1.0f]];
     
     // save image to album
     [TGCamera setOption:kTGCameraOptionSaveImageToAlbum value:[NSNumber numberWithBool:YES]];
@@ -101,6 +101,7 @@
 - (IBAction)takePhotoTapped
 {    
     TGCameraNavigationController *navigationController = [TGCameraNavigationController newWithCameraDelegate:self];
+    
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
