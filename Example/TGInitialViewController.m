@@ -65,13 +65,13 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)cameraDidTakePhoto:(UIImage *)image
+- (void)cameraDidTakePhoto:(UIImage *)image andViewController:(UINavigationController *)navController
 {
     _photoView.image = image;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)cameraDidSelectAlbumPhoto:(UIImage *)image
+- (void)cameraDidSelectAlbumPhoto:(UIImage *)image andViewController:(UINavigationController *)navController
 {
     _photoView.image = image;
     [self dismissViewControllerAnimated:YES completion:nil];

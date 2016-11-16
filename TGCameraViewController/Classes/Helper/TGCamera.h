@@ -79,8 +79,10 @@
 @protocol TGCameraDelegate <NSObject>
 
 - (void)cameraDidCancel;
-- (void)cameraDidSelectAlbumPhoto:(UIImage *)image;
-- (void)cameraDidTakePhoto:(UIImage *)image;
+- (void)cameraDidSelectAlbumPhoto:(UIImage *)image
+                andViewController:(UINavigationController *)navController;
+- (void)cameraDidTakePhoto:(UIImage *)image
+         andViewController:(UINavigationController *)navController;;
 
 @optional
 

@@ -138,9 +138,9 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         _photo = _photoView.image;
         
         if (_albumPhoto) {
-            [_delegate cameraDidSelectAlbumPhoto:_photo];
+            [_delegate cameraDidSelectAlbumPhoto:_photo andViewController:self.navigationController];
         } else {
-            [_delegate cameraDidTakePhoto:_photo];
+            [_delegate cameraDidTakePhoto:_photo andViewController:self.navigationController];
         }
         
         ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
