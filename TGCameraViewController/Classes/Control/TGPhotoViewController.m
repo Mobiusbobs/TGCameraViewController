@@ -134,7 +134,7 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         [_delegate cameraWillTakePhoto];
     }
     
-    if ([_delegate respondsToSelector:@selector(cameraDidTakePhoto:)]) {
+    if ([_delegate respondsToSelector:@selector(cameraDidTakePhoto: andViewController:)]) {
         _photo = _photoView.image;
         
         if (_albumPhoto) {
