@@ -148,7 +148,7 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         
         void (^saveJPGImageAtDocumentDirectory)(UIImage *) = ^(UIImage *photo) {
             [library saveJPGImageAtDocumentDirectory:_photo resultBlock:^(NSURL *assetURL) {
-                [_delegate cameraDidSavePhotoAtPath:assetURL];
+                [_delegate cameraDidSavePhotoAtPath:assetURL andViewController:self.navigationController];
             } failureBlock:^(NSError *error) {
                 if ([_delegate respondsToSelector:@selector(cameraDidSavePhotoWithError:)]) {
                     [_delegate cameraDidSavePhotoWithError:error];
@@ -158,8 +158,8 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         
         if ([[TGCamera getOption:kTGCameraOptionSaveImageToAlbum] boolValue] && status != ALAuthorizationStatusDenied) {
             [library saveImage:_photo resultBlock:^(NSURL *assetURL) {
-                if ([_delegate respondsToSelector:@selector(cameraDidSavePhotoAtPath:)]) {
-                    [_delegate cameraDidSavePhotoAtPath:assetURL];
+                if ([_delegate respondsToSelector:@selector(cameraDidSavePhotoAtPath:andViewController:)]) {
+                    [_delegate cameraDidSavePhotoAtPath:assetURL andViewController:self.navigationController];
                 }
             } failureBlock:^(NSError *error) {
                 saveJPGImageAtDocumentDirectory(_photo);

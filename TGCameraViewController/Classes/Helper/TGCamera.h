@@ -85,7 +85,7 @@
 @optional
 
 - (void)cameraDidSavePhotoWithError:(NSError *)error;
-- (void)cameraDidSavePhotoAtPath:(NSURL *)assetURL;
+- (void)cameraDidSavePhotoAtPath:(NSURL *)assetURL andViewController:(UINavigationController *)navController;
 - (void)cameraWillTakePhoto;
 
 @end
