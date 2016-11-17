@@ -98,7 +98,7 @@
                                 <action selector="toggleTapped" destination="-1" eventType="touchUpInside" id="cnq-8L-ak1"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p7O-pE-Mp0" userLabel="Flash" customClass="TGTintedButton">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p7O-pE-Mp0" userLabel="Flash" customClass="TGTintedButton">
                             <rect key="frame" x="539" y="60" width="50" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="6QJ-EO-jQZ"/>
@@ -248,7 +248,7 @@
     </objects>
     <resources>
         <image name="CameraClose" width="40" height="40"/>
-        <image name="CameraFlashAuto" width="41" height="41"/>
+        <image name="CameraFlashAuto" width="40" height="40"/>
         <image name="CameraRoll" width="50" height="50"/>
         <image name="CameraShot" width="120" height="120"/>
         <image name="CameraToggle" width="40" height="40"/>

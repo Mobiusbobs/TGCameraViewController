@@ -44,9 +44,9 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 @property (strong, nonatomic) IBOutlet UIView *bottomView;
 @property (strong, nonatomic) IBOutlet TGCameraFilterView *filterView;
 @property (strong, nonatomic) IBOutlet UIButton *defaultFilterButton;
-@property (weak, nonatomic) IBOutlet TGTintedButton *filterWandButton;
 @property (weak, nonatomic) IBOutlet TGTintedButton *cancelButton;
 @property (weak, nonatomic) IBOutlet TGTintedButton *confirmButton;
+@property (weak, nonatomic) IBOutlet UILabel *tipLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
 
@@ -100,13 +100,15 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
     
     NSBundle *bundle = [NSBundle bundleForClass:self.class];
     [_cancelButton setImage:[UIImage imageNamed:@"CameraBack" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    [_confirmButton setImage:[UIImage imageNamed:@"CameraShot" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-    [_filterWandButton setImage:[UIImage imageNamed:@"CameraFilter" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
-
-    if ([[TGCamera getOption:kTGCameraOptionHiddenFilterButton] boolValue] == YES) {
-        _filterWandButton.hidden = YES;
-    }
+    [_confirmButton setImage:[UIImage imageNamed:@"CameraNext" inBundle:bundle compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
     
+    NSString *language = [[NSLocale preferredLanguages] firstObject];
+    NSString *firstDigit = [[language componentsSeparatedByString:@"-"] firstObject];
+    if ([firstDigit isEqualToString:@"zh"]) {
+        _tipLabel.text = @"選擇濾鏡";
+    } else {
+        _tipLabel.text = @"Select Your Filter";
+    }
     [self addDetailViewToButton:_defaultFilterButton];
 }
 
@@ -169,18 +171,6 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
                 saveJPGImageAtDocumentDirectory(_photo);
             }
         }
-    }
-}
-
-- (IBAction)filtersTapped
-{
-    if ([_filterView isDescendantOfView:self.view]) {
-        [_filterView removeFromSuperviewAnimated];
-    } else {
-        [_filterView addToView:self.view aboveView:_bottomView];
-        [self.view sendSubviewToBack:_filterView];
-        [self.view sendSubviewToBack:_photoView];
-        [self.view sendSubviewToBack:_backgroundView];
     }
 }
 
