@@ -25,10 +25,21 @@
 
 @import UIKit;
 
+typedef NS_ENUM(NSUInteger, TGCameraFilterType){
+    TGCameraFilterTypeNone   = 0,
+    TGCameraFilterTypeSaturate,
+    TGCameraFilterTypeCurve,
+    TGCameraFilterTypeVignette,
+    TGCameraFilterTypeCount
+};
+
 @interface UIImage (CameraFilters)
 
 - (UIImage *)curveFilter;
 - (UIImage *)saturateImage:(CGFloat)saturation withContrast:(CGFloat)contrast;
 - (UIImage *)vignetteWithRadius:(CGFloat)radius intensity:(CGFloat)intensity;
+
+
+- (UIImage *)applyFilterWithType:(TGCameraFilterType)type;
 
 @end

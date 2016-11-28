@@ -30,23 +30,27 @@
 #import "TGCameraFilterView.h"
 #import "UIImage+CameraFilters.h"
 #import "TGTintedButton.h"
+#import "TGCameraFilterCollectionViewCell.h"
 
 static NSString* const kTGCacheSatureKey = @"TGCacheSatureKey";
 static NSString* const kTGCacheCurveKey = @"TGCacheCurveKey";
 static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 
-
-
 @interface TGPhotoViewController ()
+
+<
+    UICollectionViewDataSource,
+    UICollectionViewDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *backgroundView;
 @property (strong, nonatomic) IBOutlet UIImageView *photoView;
 @property (strong, nonatomic) IBOutlet UIView *bottomView;
-@property (strong, nonatomic) IBOutlet TGCameraFilterView *filterView;
-@property (strong, nonatomic) IBOutlet UIButton *defaultFilterButton;
 @property (weak, nonatomic) IBOutlet TGTintedButton *cancelButton;
 @property (weak, nonatomic) IBOutlet TGTintedButton *confirmButton;
 @property (weak, nonatomic) IBOutlet UILabel *tipLabel;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
 
@@ -58,12 +62,6 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 
 - (IBAction)backTapped;
 - (IBAction)confirmTapped;
-- (IBAction)filtersTapped;
-
-- (IBAction)defaultFilterTapped:(UIButton *)button;
-- (IBAction)satureFilterTapped:(UIButton *)button;
-- (IBAction)curveFilterTapped:(UIButton *)button;
-- (IBAction)vignetteFilterTapped:(UIButton *)button;
 
 - (void)addDetailViewToButton:(UIButton *)button;
 + (instancetype)newController;
@@ -91,6 +89,11 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 {
     [super viewDidLoad];
     
+    [_collectionView registerClass:[TGCameraFilterCollectionViewCell class]
+         forCellWithReuseIdentifier:kTGCameraFilterCollectionViewCellIdentifier];
+    _collectionView.dataSource = self;
+    _collectionView.delegate = self;
+    
     if (CGRectGetHeight([[UIScreen mainScreen] bounds]) <= 480) {
         _topViewHeight.constant = 0;
     }
@@ -109,7 +112,6 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
     } else {
         _tipLabel.text = @"Select Your Filter";
     }
-    [self addDetailViewToButton:_defaultFilterButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,6 +179,24 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 #pragma mark -
 #pragma mark - Filter view actions
 
+- (NSString *)cacheKeyWithFilterType:(TGCameraFilterType)type
+{
+    switch (type) {
+        case TGCameraFilterTypeSaturate:
+            return kTGCacheSatureKey;
+            break;
+        case TGCameraFilterTypeCurve:
+            return kTGCacheCurveKey;
+            break;
+        case TGCameraFilterTypeVignette:
+            return kTGCacheVignetteKey;
+            break;
+        default:
+            return @"None";
+            break;
+    }
+}
+
 - (IBAction)defaultFilterTapped:(UIButton *)button
 {
     [self addDetailViewToButton:button];
@@ -224,27 +244,39 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 #pragma mark -
 #pragma mark - Private methods
 
-- (void)addDetailViewToButton:(UIButton *)button
-{
-    [_detailFilterView removeFromSuperview];
-    
-    CGFloat height = 2.5;
-    
-    CGRect frame = button.frame;
-    frame.size.height = height;
-    frame.origin.x = 0;
-    frame.origin.y = CGRectGetMaxY(button.frame) - height;
-    
-    _detailFilterView = [[UIView alloc] initWithFrame:frame];
-    _detailFilterView.backgroundColor = [TGCameraColor tintColor];
-    _detailFilterView.userInteractionEnabled = NO;
-    
-    [button addSubview:_detailFilterView];
-}
-
 + (instancetype)newController
 {
     return [[self alloc] initWithNibName:NSStringFromClass(self.class) bundle:[NSBundle bundleForClass:self.class]];
 }
 
+#pragma mark - UICollectionView
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return TGCameraFilterTypeCount;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    TGCameraFilterCollectionViewCell *cell =
+    [collectionView dequeueReusableCellWithReuseIdentifier:kTGCameraFilterCollectionViewCellIdentifier
+                                              forIndexPath:indexPath];
+    
+    
+    [cell updateImageWithFilterType:indexPath.row];
+    
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cacheKey = [self cacheKeyWithFilterType:indexPath.row];
+    
+    if ([_cachePhoto objectForKey:cacheKey]) {
+        _photoView.image = [_cachePhoto objectForKey:cacheKey];
+    } else {
+        [_cachePhoto setObject:[_photo applyFilterWithType:indexPath.row]
+                        forKey:cacheKey];
+        _photoView.image = [_cachePhoto objectForKey:cacheKey];
+    }
+}
 @end

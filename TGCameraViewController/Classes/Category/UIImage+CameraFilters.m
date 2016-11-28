@@ -111,4 +111,23 @@ static NSString* const kInputSaturation         = @"inputSaturation";
     return image;
 }
 
+#pragma mark - Apply Filter
+- (UIImage *)applyFilterWithType:(TGCameraFilterType)type
+{
+    switch (type) {
+        case TGCameraFilterTypeSaturate:
+            return [self saturateImage:1.8 withContrast:1];
+            break;
+        case TGCameraFilterTypeCurve:
+            return [self curveFilter];
+            break;
+        case TGCameraFilterTypeVignette:
+            return [self vignetteWithRadius:0 intensity:6];
+            break;
+        default:
+            return self;
+            break;
+    }
+}
+
 @end
