@@ -30,6 +30,11 @@ typedef NS_ENUM(NSUInteger, TGCameraFilterType){
     TGCameraFilterTypeSaturate,
     TGCameraFilterTypeCurve,
     TGCameraFilterTypeVignette,
+    TGCameraFilterTypeProcess,
+    TGCameraFilterTypeTransfer,
+    TGCameraFilterChrome,
+    TGCameraFilterClamp,
+    TGCameraFilterMono,
     TGCameraFilterTypeCount
 };
 

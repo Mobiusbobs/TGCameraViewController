@@ -56,13 +56,28 @@
 {
     switch (type) {
         case TGCameraFilterTypeSaturate:
-            return @"Saturate";
+            return @"Bourbon";
             break;
         case TGCameraFilterTypeCurve:
-            return @"Curve";
+            return @"Aviation";
             break;
         case TGCameraFilterTypeVignette:
-            return @"Vignette";
+            return @"Mojito";
+            break;
+        case TGCameraFilterTypeProcess:
+            return @"Martini";
+            break;
+        case TGCameraFilterTypeTransfer:
+            return @"Gin";
+            break;
+        case TGCameraFilterChrome:
+            return @"Negroni";
+            break;
+        case TGCameraFilterMono:
+            return @"Daiquiri";
+            break;
+        case TGCameraFilterClamp:
+            return @"Alchemy";
             break;
         default:
             return @"None";

@@ -35,6 +35,11 @@
 static NSString* const kTGCacheSatureKey = @"TGCacheSatureKey";
 static NSString* const kTGCacheCurveKey = @"TGCacheCurveKey";
 static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
+static NSString* const kTGCacheChromeKey = @"TGCacheChromeKey";
+static NSString* const kTGCacheMonoKey = @"TGCacheMonoKey";
+static NSString* const kTGCacheProcessKey = @"TGCacheProcessKey";
+static NSString* const kTGCacheTransferKey = @"TGCacheTransferKey";
+static NSString* const kTGCacheClampKey = @"TGCacheClampKey";
 
 @interface TGPhotoViewController ()
 
@@ -191,6 +196,21 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
         case TGCameraFilterTypeVignette:
             return kTGCacheVignetteKey;
             break;
+        case TGCameraFilterChrome:
+            return kTGCacheChromeKey;
+            break;
+        case TGCameraFilterMono:
+            return kTGCacheMonoKey;
+            break;
+        case TGCameraFilterTypeProcess:
+            return kTGCacheProcessKey;
+            break;
+        case TGCameraFilterTypeTransfer:
+            return kTGCacheTransferKey;
+            break;
+        case TGCameraFilterClamp:
+            return kTGCacheClampKey;
+            break;
         default:
             return @"None";
             break;
@@ -270,6 +290,10 @@ static NSString* const kTGCacheVignetteKey = @"TGCacheVignetteKey";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cacheKey = [self cacheKeyWithFilterType:indexPath.row];
+    
+    if (indexPath.row == 0) {
+        _photoView.image = _photo;
+    }
     
     if ([_cachePhoto objectForKey:cacheKey]) {
         _photoView.image = [_cachePhoto objectForKey:cacheKey];

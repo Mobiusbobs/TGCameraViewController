@@ -96,6 +96,61 @@ static NSString* const kInputSaturation         = @"inputSaturation";
     return [self imageFromContext:context withFilter:filter];
 }
 
+- (UIImage *)photoEffectChrome
+{
+    CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectChrome"
+                                  keysAndValues:kCIInputImageKey ,inputImage, nil];
+    
+    [filter setDefaults];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [self imageFromContext:context withFilter:filter];
+}
+
+- (UIImage *)photoEffectMono
+{
+    CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectMono"
+                                  keysAndValues:kCIInputImageKey ,inputImage, nil];
+    
+    [filter setDefaults];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [self imageFromContext:context withFilter:filter];
+}
+
+- (UIImage *)photoEffectProcess
+{
+    CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectProcess"
+                                  keysAndValues:kCIInputImageKey ,inputImage, nil];
+    
+    [filter setDefaults];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [self imageFromContext:context withFilter:filter];
+}
+
+- (UIImage *)photoEffectTransfer
+{
+    CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectTransfer"
+                                  keysAndValues:kCIInputImageKey ,inputImage, nil];
+    
+    [filter setDefaults];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [self imageFromContext:context withFilter:filter];
+}
+
+- (UIImage *)photoEffectClamp
+{
+    CIImage *inputImage = [[CIImage alloc] initWithImage:self];
+    CIFilter *filter = [CIFilter filterWithName:@"CIPhotoEffectInstant"
+                                  keysAndValues:kCIInputImageKey ,inputImage, nil];
+    
+    [filter setDefaults];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [self imageFromContext:context withFilter:filter];
+}
+
 #pragma mark -
 #pragma mark - Private methods
 
@@ -123,6 +178,21 @@ static NSString* const kInputSaturation         = @"inputSaturation";
             break;
         case TGCameraFilterTypeVignette:
             return [self vignetteWithRadius:0 intensity:6];
+            break;
+        case TGCameraFilterTypeProcess:
+            return [self photoEffectProcess];
+            break;
+        case TGCameraFilterTypeTransfer:
+            return [self photoEffectTransfer];
+            break;
+        case TGCameraFilterChrome:
+            return [self photoEffectChrome];
+            break;
+        case TGCameraFilterClamp:
+            return [self photoEffectClamp];
+            break;
+        case TGCameraFilterMono:
+            return [self photoEffectMono];
             break;
         default:
             return self;

@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "CameraEffectDefault.png"
+      "filename" : "filter_normal1x.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "CameraEffectDefault@2x.png"
+      "filename" : "filter_normal2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "CameraEffectDefault@3x.png"
+      "filename" : "filter_normal.png",
+      "scale" : "3x"
     }
   ],
   "info" : {
