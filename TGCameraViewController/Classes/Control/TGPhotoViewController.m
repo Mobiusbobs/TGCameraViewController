@@ -124,6 +124,12 @@ static NSString* const kTGCacheClampKey = @"TGCacheClampKey";
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+}
+
 - (BOOL)prefersStatusBarHidden
 {
     return YES;
