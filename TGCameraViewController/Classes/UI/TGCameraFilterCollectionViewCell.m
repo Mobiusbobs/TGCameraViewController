@@ -62,10 +62,10 @@
             return @"Aviation";
             break;
         case TGCameraFilterTypeVignette:
-            return @"Mojito";
+            return @"Kaluwa";
             break;
         case TGCameraFilterTypeProcess:
-            return @"Martini";
+            return @"Mojito";
             break;
         case TGCameraFilterTypeTransfer:
             return @"Gin";
