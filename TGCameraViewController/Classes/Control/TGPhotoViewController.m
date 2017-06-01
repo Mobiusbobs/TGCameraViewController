@@ -99,10 +99,6 @@ static NSString* const kTGCacheClampKey = @"TGCacheClampKey";
     _collectionView.dataSource = self;
     _collectionView.delegate = self;
     
-    if (CGRectGetHeight([[UIScreen mainScreen] bounds]) <= 480) {
-        _topViewHeight.constant = 0;
-    }
-    
     _photoView.clipsToBounds = YES;
     _photoView.image = _photo;
     
